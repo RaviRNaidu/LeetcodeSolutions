@@ -11,7 +11,10 @@ public:
                 int k = j + 1;
                 int h = n - 1;
                 while(k < h){
-                    long long sum = (long long)arr[i]+(long long)arr[j]+(long long)arr[k]+(long long)arr[h];
+                    long long sum = arr[i];
+                    sum += arr[j];
+                    sum += arr[k];
+                    sum += arr[h];
                     if(sum > target){
                         h--;
                     }
