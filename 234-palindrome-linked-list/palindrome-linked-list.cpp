@@ -34,11 +34,13 @@ public:
         ListNode* left = head;
         while(right != NULL){
             if(left->val != right->val){
+                reverseNode(slow->next);
                 return false;
             }
             left = left->next;
             right = right->next;
         }
+        reverseNode(slow->next);
         return true;
     }
 };
