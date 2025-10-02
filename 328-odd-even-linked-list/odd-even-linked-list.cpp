@@ -13,16 +13,15 @@ public:
     ListNode* oddEvenList(ListNode* head) {
         if(head == NULL || head->next == NULL) return head;
         ListNode* odd = head;
-        ListNode* oddMover = odd;
         ListNode* even = head->next;
-        ListNode* evenMover = even;
-        while(evenMover != NULL && evenMover->next != NULL){
-            oddMover->next = oddMover->next->next;
-            evenMover->next = evenMover->next->next;
-            oddMover = oddMover->next;
-            evenMover = evenMover->next;
+        ListNode* evenHead = head->next;
+        while(even != NULL && even->next != NULL){
+            odd->next = odd->next->next;
+            odd = odd->next;
+            even->next = even->next->next;
+            even = even->next;
         }
-        oddMover->next = even;
+        odd->next = evenHead;
         return head;
     }
 };
