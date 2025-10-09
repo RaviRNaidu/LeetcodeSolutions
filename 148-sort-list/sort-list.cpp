@@ -25,17 +25,18 @@ class Solution {
         while(head1 != NULL && head2 != NULL){
             if(head1->val <= head2->val){
                 mover->next = head1;
-                mover = mover->next;
+                mover = head1;
                 head1 = head1->next;
             }
             else{
                 mover->next = head2;
-                mover = mover->next;
+                mover = head2;
                 head2 = head2->next;
             }
         }
         if(head1) mover->next = head1;
-        if(head2) mover->next = head2;
+        else mover->next = head2;
+
         return dup->next;
     }
 public:
@@ -47,8 +48,10 @@ public:
         ListNode* left = head;
         ListNode* right = mid->next;
         mid->next = NULL;
+
         left = sortList(left);
         right = sortList(right);
-        return left = mergeSort(left, right);
+
+        return mergeSort(left, right);
     }
 };
