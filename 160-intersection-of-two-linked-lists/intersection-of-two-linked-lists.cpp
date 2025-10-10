@@ -7,6 +7,21 @@
  * };
  */
 class Solution {
+    ListNode* function(ListNode* headA, ListNode* headB, int diff){
+        ListNode* temp1 = headA;
+        ListNode* temp2 = headB;
+        while(diff > 0){
+            diff--;
+            temp1 = temp1->next;
+        }
+
+        while(temp1 != NULL){
+            if(temp1 == temp2) return temp1;
+            temp1 = temp1->next;
+            temp2 = temp2->next;
+        }
+        return NULL;
+    }
 public:
     ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
         ListNode* temp1 = headA;
@@ -22,29 +37,11 @@ public:
             L2++;
             temp2 = temp2->next;
         }
-        int diff = abs(L1 - L2);
-        temp1 = headA;
-        temp2 = headB;
-        if(L2 > L1){
-            while(diff > 0){
-                diff--;
-                temp2 = temp2->next;
-            }
+        if(L1 > L2){
+            return function(headA, headB, L1-L2);
         }
         else{
-            while(diff > 0){
-                diff--;
-                temp1 = temp1->next;
-            }
+            return function(headB, headA, L2-L1);
         }
-
-        while(temp1 != NULL){
-            if(temp1 == temp2){
-                return temp1;
-            }
-            temp1 = temp1->next;
-            temp2 = temp2->next;
-        }
-        return NULL;
     }
 };
