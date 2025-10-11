@@ -16,48 +16,26 @@ public:
         int carry = 0;
         ListNode* dummy = new ListNode(-1);
         ListNode* mover = dummy;
-        while(temp1 != NULL && temp2 != NULL){
-            int sum = (temp1->val + temp2->val + carry);
-            if(sum > 9){
-                sum = sum % 10;
-                carry = 1;
-            }
-            else carry = 0;
-            ListNode* newNode = new ListNode(sum);
+        while(temp1 != NULL || temp2 != NULL){
+            int sum = carry;
+            if(temp1) sum += temp1->val;
+            if(temp2) sum += temp2->val;
+            ListNode* newNode = new ListNode(sum % 10);
+            carry = sum / 10;
+
             mover->next = newNode;
             mover = newNode;
-            temp1 = temp1->next;
-            temp2 = temp2->next;
+
+            if(temp1) temp1 = temp1->next;
+            if(temp2) temp2 = temp2->next;
         }
-        while(temp1 != NULL){
-            int sum = temp1->val + carry;
-            if(sum > 9){
-                sum = sum % 10;
-                carry = 1;
-            }
-            else carry = 0;
-            ListNode* newNode = new ListNode(sum);
-            mover->next = newNode;
-            mover = newNode;
-            temp1 = temp1->next;
-        }
-        while(temp2 != NULL){
-            int sum = temp2->val + carry;
-            if(sum > 9){
-                sum = sum % 10;
-                carry = 1;
-            }
-            else carry = 0;
-            ListNode* newNode = new ListNode(sum);
-            mover->next = newNode;
-            mover = newNode;
-            temp2 = temp2->next;
-        }
+        
         if(carry != 0){
             ListNode* newNode = new ListNode(carry);
             mover->next = newNode;
             mover = newNode;
         }
+
         return dummy->next;
     }
 };
