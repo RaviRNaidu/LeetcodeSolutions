@@ -18,8 +18,8 @@ public:
         ListNode* mover = dummy;
         while(temp1 != NULL || temp2 != NULL){
             int sum = carry;
-            if(temp1) sum += temp1->val;
-            if(temp2) sum += temp2->val;
+            if(temp1 != NULL) sum += temp1->val;
+            if(temp2 != NULL) sum += temp2->val;
             ListNode* newNode = new ListNode(sum % 10);
             carry = sum / 10;
 
@@ -33,7 +33,6 @@ public:
         if(carry != 0){
             ListNode* newNode = new ListNode(carry);
             mover->next = newNode;
-            mover = newNode;
         }
 
         return dummy->next;
