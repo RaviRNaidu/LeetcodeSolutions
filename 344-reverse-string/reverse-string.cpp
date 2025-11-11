@@ -5,7 +5,9 @@ public:
         int st = 0;
         int end = n-1;
         while(st < end){
-            swap(s[st], s[end]);
+            char temp = s[st];
+            s[st] = s[end];
+            s[end] = temp;
             st++;
             end--;
         }
