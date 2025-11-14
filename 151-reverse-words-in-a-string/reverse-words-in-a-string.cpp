@@ -15,7 +15,6 @@ public:
                 ans += " " + word;
             }
         }
-        ans.erase(0,1);
-        return ans;
+        return ans.substr(1);
     }
 };
