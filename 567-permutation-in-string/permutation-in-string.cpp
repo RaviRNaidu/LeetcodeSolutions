@@ -9,23 +9,31 @@ class Solution {
     }
 public:
     bool checkInclusion(string s1, string s2) {
-        int n = s1.length();
-        int arr1[26] = {0};
-        for(int i=0;i<n;i++){
-            arr1[s1[i] - 'a']++;
+        if(s1.length() > s2.length()) return false;
+        unordered_map<char, int> mpp1;
+        unordered_map<char, int> mpp2;
+        for(int i=0;i<s1.length();i++){
+            mpp1[s1[i]]++;
+            mpp2[s2[i]]++;
         }
 
-        int windowSize = n;
-        for(int i=0;i<s2.length();i++){
-            int arr2[26] = {0};
-            int windowIndex = 0;
-            int index = i;
-            while((windowIndex < windowSize) && (index < s2.length())){
-                arr2[s2[index] - 'a']++;
-                index++;
-                windowIndex++;
+        if(mpp1 == mpp2){
+            return true;
+        }
+
+        int left = 0;
+        
+        for(int right = s1.length();right<s2.length();right++){
+            mpp2[s2[right]]++;
+            mpp2[s2[left]]--;
+
+            if(mpp2[s2[left]] == 0){
+                mpp2.erase(s2[left]);
             }
-            if(check(arr1,arr2)){
+
+            left++;
+
+            if(mpp1 == mpp2){
                 return true;
             }
         }
