@@ -13,28 +13,16 @@ public:
                 }
                 char pop = st.top();
                 st.pop();
-                switch(pop){
-                    case '(':
-                        if(str[i] != ')'){
-                            return false;
-                        }
-                        break;
-                    case '{':
-                        if(str[i] != '}'){
-                            return false;
-                        }
-                        break;
-                    case '[':
-                        if(str[i] != ']'){
-                            return false;
-                        }
-                        break;
-                };
+                if((str[i] == ')' && pop == '(') ||
+                   (str[i] == ']' && pop == '[') ||
+                   (str[i] == '}' && pop == '{')){
+                        continue;
+                    }
+                else{
+                    return false;
+                }
             }
         }
-        if(st.empty()){
-            return true;
-        }
-        else return false;
+        return st.empty();
     }
 };
