@@ -18,14 +18,18 @@ public:
         int maxWidth = INT_MIN;
         while(!q.empty()){
             int n = q.size();
-            maxWidth = max(maxWidth,(q.back().second - q.front().second) + 1);
+            int min = q.front().second;
+            int first, last;
             for(int i=0;i<n;i++){
-                auto temp = q.front();
+                TreeNode* temp = q.front().first;
+                int curr_Idx = q.front().second - min;
                 q.pop();
-
-                if(temp.first->left) q.push({temp.first->left,(2LL * temp.second) + 1});
-                if(temp.first->right) q.push({temp.first->right,(2LL * temp.second) + 2});
+                if(i == 0) first = curr_Idx;
+                if(i == n-1) last = curr_Idx;
+                if(temp->left) q.push({temp->left,(2LL * curr_Idx) + 1});
+                if(temp->right) q.push({temp->right,(2LL * curr_Idx) + 2});
             }
+            maxWidth = max(maxWidth,(last - first) + 1);
         }
         return maxWidth;
     }
