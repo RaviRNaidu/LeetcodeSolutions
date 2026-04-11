@@ -10,17 +10,29 @@
  * };
  */
 class Solution {
-    void traversal(TreeNode* root, int & cnt){
-        if(root != NULL){
-            traversal(root->left, cnt);
-            cnt++;
-            traversal(root->right, cnt);
+    int findLH(TreeNode* root){
+        int ans = 0;
+        while(root){
+            ans++;
+            root = root->left;
         }
+        return ans;
+    }
+
+    int findRH(TreeNode* root){
+        int ans = 0;
+        while(root){
+            ans++;
+            root = root->right;
+        }
+        return ans;
     }
 public:
     int countNodes(TreeNode* root) {
-        int cnt = 0;
-        traversal(root, cnt);
-        return cnt;
+        if(root == NULL) return 0;
+        int lh = findLH(root);
+        int rh = findRH(root);
+        if(lh == rh) return (1<<lh) - 1;
+        return 1 + countNodes(root->left) + countNodes(root->right);
     }
 };
