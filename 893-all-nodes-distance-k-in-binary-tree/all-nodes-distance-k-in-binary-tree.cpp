@@ -8,62 +8,61 @@
  * };
  */
 class Solution {
-public:
-    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
-        unordered_map<TreeNode*, TreeNode*> mpp;
-        unordered_map<TreeNode*, bool> check;
-        check[root] = false;
+    unordered_map<TreeNode*,TreeNode*> markParent(TreeNode* root){
         queue<TreeNode*> q;
+        unordered_map<TreeNode*,TreeNode*> mpp;
+        if(root == NULL) return mpp;
         q.push(root);
         while(!q.empty()){
-            TreeNode* temp = q.front();
-            q.pop();
-
-            if(temp->left){
-                mpp[temp->left] = temp;
-                check[temp->left] = false;
-                q.push(temp->left);
-            }
-
-            if(temp->right){
-                mpp[temp->right] = temp;
-                check[temp->right] = false;
-                q.push(temp->right);
+            int n = q.size();
+            for(int i=0;i<n;i++){
+                TreeNode* temp = q.front();
+                q.pop();
+                if(temp->left){
+                    mpp[temp->left] = temp;
+                    q.push(temp->left);
+                }
+                if(temp->right){
+                    mpp[temp->right] = temp;
+                    q.push(temp->right);
+                }
             }
         }
-
+        return mpp;
+    }
+public:
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
         vector<int> ans;
-        queue<TreeNode*> n;
-        n.push(target);
-        check[target] = true;
-        int i = 0;
-        while(!n.empty() && i < k){
-            int size = n.size();
-            for(int j=0;j<size;j++){
-                TreeNode* cur = n.front();
-                n.pop();
-
-                if(cur->left && check[cur->left] == false){
-                    n.push(cur->left);
-                    check[cur->left] = true;
+        unordered_map<TreeNode*, TreeNode*> mpp = markParent(root);
+        unordered_map<TreeNode*, bool> visited;
+        queue<TreeNode*> q;
+        q.push(target);
+        visited[target] = true;
+        int dist = 0;
+        while(!q.empty()){
+            int n = q.size();
+            if(dist == k) break;
+            for(int i=0;i<n;i++){
+                TreeNode* temp = q.front();
+                q.pop();
+                if(temp->left && !visited[temp->left]){
+                    q.push(temp->left);
+                    visited[temp->left] = true;
                 }
-                if(cur->right && check[cur->right] == false){
-                    n.push(cur->right);
-                    check[cur->right] = true;
+                if(temp->right && !visited[temp->right]){
+                    q.push(temp->right);
+                    visited[temp->right] = true;
                 }
-                if(mpp.find(cur) != mpp.end() && check[mpp[cur]] == false){
-                    n.push(mpp[cur]);
-                    check[mpp[cur]] = true;
+                if(mpp.count(temp) && !visited[mpp[temp]]){
+                    q.push(mpp[temp]);
+                    visited[mpp[temp]] = true;
                 }
             }
-            i++;
+            dist++;
         }
-
-        while(!n.empty()){
-            auto it = n.front();
-            n.pop();
-
-            ans.push_back(it->val);
+        while(!q.empty()){
+            ans.push_back(q.front()->val);
+            q.pop();
         }
         return ans;
     }
