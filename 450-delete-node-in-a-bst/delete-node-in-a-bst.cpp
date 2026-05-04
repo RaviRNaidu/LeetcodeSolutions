@@ -10,6 +10,12 @@
  * };
  */
 class Solution {
+    TreeNode* traversal(TreeNode* root){
+        while(root->right != NULL){
+            root = root->right;
+        }
+        return root;
+    }
     bool isLeafNode(TreeNode* node){
         return (node->left == NULL && node->right == NULL);
     }
@@ -20,22 +26,36 @@ class Solution {
         //left not present
         if(root->left == NULL) return root->right;
 
-        //iterating to the last node of left subTree
-        TreeNode* temp = root->left;
-        while(temp->right != NULL){
-            temp = temp->right;
-        }
-        //link changes
-        temp->right = root->right->left;
-        root->right->left = root->left;
-        return root->right;
+        TreeNode* rightChild = root->right;
+        TreeNode* leftRight = traversal(root->left);
+        leftRight->right = rightChild;
+        return root->left;
     }
 public:
     TreeNode* deleteNode(TreeNode* root, int key) {
         if(root == NULL) return NULL;
         if(root->val == key) return remove(root);
-        root->left = deleteNode(root->left, key);
-        root->right = deleteNode(root->right, key);
+        TreeNode* curr = root;
+        while(curr != NULL){
+            if(curr->val > key){
+                if(curr->left != NULL && curr->left->val == key){
+                    curr->left = remove(curr->left);
+                    break;
+                }
+                else{
+                    curr = curr->left;
+                }
+            }
+            else{
+                if(curr->right != NULL && curr->right->val == key){
+                    curr->right = remove(curr->right);
+                    break;
+                }
+                else{
+                    curr = curr->right;
+                }
+            }
+        }
         return root;
     }
 };
