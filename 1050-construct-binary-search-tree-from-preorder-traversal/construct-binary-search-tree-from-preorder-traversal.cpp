@@ -10,24 +10,19 @@
  * };
  */
 class Solution {
-    TreeNode* construct(vector<int>& preorder, int start, int end){
-        if(start > end) return NULL;
-        TreeNode* root = new TreeNode(preorder[start]);
-        if(start == end) return root;
-        int idx = end + 1;
-        for(int i=start+1;i<=end;i++){
-            if(preorder[i] > preorder[start]){
-                idx = i;
-                break;
-            }
+    TreeNode* construct(vector<int>& preorder, int &i, int bound){
+        if(i == preorder.size() || preorder[i] > bound){
+            return NULL;
         }
-        root->left = construct(preorder, start+1, idx-1);
-        root->right = construct(preorder, idx, end);
+        TreeNode* root = new TreeNode(preorder[i]);
+        i++;
+        root->left = construct(preorder, i, root->val);
+        root->right = construct(preorder, i, bound);
         return root;
     }
 public:
     TreeNode* bstFromPreorder(vector<int>& preorder) {
-        int n = preorder.size();
-        return construct(preorder, 0, n-1);
+        int i = 0;
+        return construct(preorder, i, INT_MAX);
     }
 };
