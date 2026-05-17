@@ -1,19 +1,23 @@
 class Solution {
-    bool recursion(int index, vector<int> &arr, int n, vector<int> &vis){
-        if(index < 0 || index >= n) return false;
-        if(vis[index] != 0) return false;
-        if(arr[index] == 0) return true;
-
-        vis[index] = 1;
-        bool sum = recursion(index + arr[index], arr, n, vis);
-        bool sub = recursion(index - arr[index], arr, n, vis);
-
-        return (sum || sub);
-    }
 public:
     bool canReach(vector<int>& arr, int start) {
         int n = arr.size();
         vector<int> vis(n, 0);
-        return recursion(start, arr, n, vis);
+        queue<int> q;
+        q.push(start);
+        while(!q.empty()){
+            int index = q.front();
+            q.pop();
+            if(arr[index] == 0) return true;
+            if(vis[index] != 0) continue;
+
+            vis[index] = 1;
+            
+            int sum = index + arr[index];
+            if(sum < n) q.push(sum);
+            int sub = index - arr[index];
+            if(sub >= 0) q.push(sub);
+        }
+        return false;
     }
 };
