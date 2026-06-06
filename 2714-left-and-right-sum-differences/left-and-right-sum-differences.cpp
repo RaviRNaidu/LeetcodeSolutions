@@ -9,12 +9,10 @@ public:
         }
 
         int leftSum = 0;
-        vector<int> ans(n);
-        ans[0] = rightSum[0];
         for(int i=1;i<n;i++){
             leftSum = leftSum + nums[i-1];
-            ans[i] = abs(leftSum - rightSum[i]);
+            rightSum[i] = abs(leftSum - rightSum[i]);
         }
-        return ans;
+        return rightSum;
     }
 };
