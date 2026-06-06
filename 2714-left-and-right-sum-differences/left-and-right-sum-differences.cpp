@@ -8,12 +8,12 @@ public:
             rightSum[i] = rightSum[i+1] + nums[i+1];
         }
 
-        vector<int> leftSum(n,0);
+        int leftSum = 0;
         vector<int> ans(n);
         ans[0] = rightSum[0];
         for(int i=1;i<n;i++){
-            leftSum[i] = leftSum[i-1] + nums[i-1];
-            ans[i] = abs(leftSum[i] - rightSum[i]);
+            leftSum = leftSum + nums[i-1];
+            ans[i] = abs(leftSum - rightSum[i]);
         }
         return ans;
     }
