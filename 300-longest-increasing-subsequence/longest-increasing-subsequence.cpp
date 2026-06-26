@@ -1,24 +1,31 @@
 class Solution {
-    int memoization(vector<int> &arr, int n){
-        vector<int> prev(n+1, 0);
-        for(int i=1;i<=n;i++){
-            vector<int> curr(n+1, 0);
-            for(int j=i;j<=n;j++){
-                int notTake = prev[j];
-                int take = 0;
-                if(j == n || arr[j] > arr[i - 1]){
-                    take = 1 + prev[i-1];
-                }
-                curr[j] = max(notTake, take);
+    int lowerBound(vector<int> &arr, int n, int target){
+        int low = 0;
+        int high = n-1;
+        while(low <= high){
+            int mid = (low + high) / 2;
+            if(arr[mid] < target){
+                low = mid + 1;
             }
-            prev = curr;
+            else{
+                high = mid - 1;
+            }
         }
-        return prev[n];
+        return low;
     }
 public:
     int lengthOfLIS(vector<int>& nums) {
         int n = nums.size();
-        int ans = memoization(nums, n);
-        return ans;
+        vector<int> ans;
+        for(int i=0;i<n;i++){
+            if(ans.empty() || ans.back() < nums[i]){
+                ans.push_back(nums[i]);
+            }
+            else{
+                int index = lowerBound(ans, ans.size(), nums[i]);
+                ans[index] = nums[i];
+            }
+        }
+        return ans.size();
     }
 };
