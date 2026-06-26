@@ -1,18 +1,19 @@
 class Solution {
     int memoization(vector<int> &arr, int n){
-        vector<vector<int>> dp(n+1, vector<int> (n+1, 0));
-
+        vector<int> prev(n+1, 0);
         for(int i=1;i<=n;i++){
+            vector<int> curr(n+1, 0);
             for(int j=i;j<=n;j++){
-                int notTake = dp[i-1][j];
+                int notTake = prev[j];
                 int take = 0;
                 if(j == n || arr[j] > arr[i - 1]){
-                    take = 1 + dp[i-1][i-1];
+                    take = 1 + prev[i-1];
                 }
-                dp[i][j] = max(notTake, take);
+                curr[j] = max(notTake, take);
             }
+            prev = curr;
         }
-        return dp[n][n];
+        return prev[n];
     }
 public:
     int lengthOfLIS(vector<int>& nums) {
