@@ -53,6 +53,8 @@ public:
         }
 
         int ans = 0;
+        int drow[4] = {-1, 0, 1, 0};
+        int dcol[4] = {0, 1, 0, -1};
         for(int i=0;i<n;i++){
             for(int j=0;j<n;j++){
                 int curr = (i*n) + j;
@@ -61,37 +63,20 @@ public:
                     ans = max(ans, ds.size[check]);
                 }
                 else{
-                    int sum = 0;
-                    unordered_map<int, int> mpp;
-                    if(i > 0 && grid[i-1][j] == 1){
-                        int up_Up = ds.findUPar(curr - n);
-                        if(mpp.find(up_Up) == mpp.end()){
-                            sum += ds.size[up_Up];
-                            mpp[up_Up]++;
+                    set<int> st;
+                    for(int k=0;k<4;k++){
+                        int nrow = i + drow[k];
+                        int ncol = j + dcol[k];
+                        if(nrow >= 0 && nrow < n && ncol >= 0 && ncol < n && grid[nrow][ncol] == 1){
+                            int up = ds.findUPar((nrow * n) + ncol);
+                            st.insert(up);
                         }
                     }
-                    if(j < n-1 && grid[i][j+1] == 1){
-                        int right_Up = ds.findUPar(curr + 1);
-                        if(mpp.find(right_Up) == mpp.end()){
-                            sum += ds.size[right_Up];
-                            mpp[right_Up]++;
-                        }
+                    int sum = 1;
+                    for(auto it : st){
+                        sum += ds.size[it];
                     }
-                    if(i < n-1 && grid[i+1][j] == 1){
-                        int down_Up = ds.findUPar(curr + n);
-                        if(mpp.find(down_Up) == mpp.end()){
-                            sum += ds.size[down_Up];
-                            mpp[down_Up]++;
-                        }
-                    }
-                    if(j > 0 && grid[i][j-1] == 1){
-                        int left_Up = ds.findUPar(curr - 1);
-                        if(mpp.find(left_Up) == mpp.end()){
-                            sum += ds.size[left_Up];
-                            mpp[left_Up]++;
-                        }
-                    }
-                    ans = max(ans, sum + 1);
+                    ans = max(ans, sum);
                 }
             }
         }
