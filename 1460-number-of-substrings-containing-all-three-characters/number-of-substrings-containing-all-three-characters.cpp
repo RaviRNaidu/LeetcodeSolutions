@@ -3,19 +3,17 @@ public:
     int numberOfSubstrings(string s) {
         int n = s.size();
         long long ans = 0;
-        for(int i=0;i<n;i++){
-            int hash[3] = {0};
-            int cnt = 0;
-            for(int j=i;j<n;j++){
-                if(hash[s[j] - 'a'] == 0){
-                    hash[s[j] - 'a'] = 1;
-                    cnt++;
-                }
-                if(cnt == 3){
-                    ans += (n - j);
-                    break;
-                }
+        int l = 0;
+        int r = 0;
+        int hash[3] = {0};
+        while(r < n){
+            hash[s[r] - 'a']++;
+            while(hash[0] != 0 && hash[1] != 0 && hash[2] != 0){
+                ans += (n - r);
+                hash[s[l] - 'a']--;
+                l++;
             }
+            r++;
         }
         return ans;
     }
