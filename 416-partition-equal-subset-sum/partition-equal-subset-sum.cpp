@@ -1,18 +1,4 @@
 class Solution {
-    int recursion(int i, int sum, vector<int> &nums, vector<vector<int>> &dp){
-        if(sum == 0) return dp[i][sum] = 1;
-        if(i == 0 && sum != 0) return dp[i][sum] = 0;
-
-        if(dp[i][sum] != -1) return dp[i][sum];
-
-        int take = 0;
-        int notTake = recursion(i-1, sum, nums, dp);
-        if(nums[i-1] <= sum){
-            take = recursion(i-1, sum - nums[i-1], nums, dp);
-        }
-
-        return dp[i][sum] = take || notTake;
-    }
 public:
     bool canPartition(vector<int>& nums) {
         int sum = 0;
@@ -21,10 +7,19 @@ public:
             sum += nums[i];
         }
         if(sum % 2 != 0) return false;
-        vector<vector<int>> dp(n+1, vector<int> ((sum/2)+1, -1));
-        if(recursion(n, sum/2, nums, dp)){
-            return true;
+        vector<bool> prev((sum/2)+1, false);
+        prev[0] = true;
+
+        for(int i=1;i<=n;i++){
+            for(int s=sum/2;s>0;s--){
+                int take = false;
+                int notTake = prev[s];
+                if(nums[i-1] <= s){
+                    take = prev[s - nums[i-1]];
+                }
+                prev[s] = take || notTake;
+            }
         }
-        return false;
+        return prev[sum/2];
     }
 };
