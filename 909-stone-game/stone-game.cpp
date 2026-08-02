@@ -1,19 +1,24 @@
 class Solution {
-    int recursion(int i, int j, vector<int>& piles, vector<vector<int>> &dp){
-        if(i == j) return dp[i][j] = piles[i];
-
-        if(dp[i][j] != -1) return dp[i][j];
-
-        int left = piles[i] - recursion(i+1, j, piles, dp);
-        int right = piles[j] - recursion(i, j-1, piles, dp);
-
-        return dp[i][j] = max(left, right);
-    }
 public:
     bool stoneGame(vector<int>& piles) {
         int n = piles.size();
-        vector<vector<int>> dp(n, vector<int> (n, -1));
-        int ans = recursion(0, n-1, piles, dp);
+        vector<int> dp(n, 0);
+
+        for(int i=n-1;i>=0;i--){
+            for(int j=i;j<n;j++){
+                if(i == j){
+                    dp[j] = piles[i];
+                }
+                else{
+                    int left = piles[i] - dp[j];
+                    int right = piles[j] - dp[j-1];
+
+                    dp[j] = max(left, right);
+                }
+            }
+        }
+
+        int ans = dp[n-1];
         if(ans > 0) return true;
         return false;
     }
