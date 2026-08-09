@@ -10,6 +10,9 @@ class Solution {
             if(idx + i <= n){
                 ans = max(ans, (suffix[idx] - suffix[idx + i]) - recursion(idx + i, piles, max(i, m), suffix, n, dp));
             }
+            else{
+                break;
+            }
         }
         if(ans == INT_MIN) return dp[idx][m] = 0;
         return dp[idx][m] = ans;
@@ -21,9 +24,24 @@ public:
         for(int i=n-1;i>=0;i--){
             suffix[i] = piles[i] + suffix[i+1];
         }
-        int m = 1;
-        vector<vector<int>> dp(n+1, vector<int> (n+1, -1));
-        int ans = recursion(0, piles, m, suffix, n, dp);
+        vector<vector<int>> dp(n+1, vector<int> (n+1, 0));
+        for(int idx=n-1;idx>=0;idx--){
+            for(int m=n;m>=1;m--){
+                int allow = 2 * m;
+                int ans = INT_MIN;
+                for(int i=1;i<=allow;i++){
+                    if(idx + i <= n){
+                        ans = max(ans, (suffix[idx] - suffix[idx + i]) - dp[idx + i][max(i, m)]);
+                    }
+                    else{
+                        break;
+                    }
+                }
+                if(ans == INT_MIN) dp[idx][m] = 0;
+                dp[idx][m] = ans;
+            }
+        }
+        int ans = dp[0][1];
         ans = (suffix[0] + ans) / 2;
         return ans;
     }
