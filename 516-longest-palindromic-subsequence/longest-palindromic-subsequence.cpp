@@ -4,7 +4,6 @@ public:
         int n = s.size();
         string t = s;
         reverse(t.begin(), t.end());
-        vector<vector<int>> dp(n+1, vector<int> (n+1, 0));
         vector<int> prev(n+1, 0);
         for(int i=1;i<=n;i++){
             vector<int> curr(n+1, 0);
