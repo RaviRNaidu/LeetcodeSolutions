@@ -1,26 +1,33 @@
 class Solution {
-    bool recursion(int i, int j, string &s, string &p, vector<vector<int>> &dp){
-        if(i == 0 && j == 0) return dp[i][j] = true;
-        if(j == 0 && i) return dp[i][j] = false;
-
-        if(dp[i][j] != -1) return dp[i][j];
-
-        if(i && (s[i-1] == p[j-1] || p[j-1] == '?')){
-            return dp[i][j] = recursion(i-1, j-1, s, p, dp);
-        }
-        bool ans = false;
-        if(p[j-1] == '*'){
-            for(int ind=0;ind<=i;ind++){
-                ans = (ans || recursion(i-ind, j-1, s, p, dp));
-            } 
-        }
-        return dp[i][j] = ans;
-    }
 public:
     bool isMatch(string s, string p) {
         int n = s.size();
         int m = p.size();
-        vector<vector<int>> dp(n+1, vector<int> (m+1, -1));
-        return recursion(n, m, s, p, dp);
+        vector<bool> prev(m+1, false);
+        prev[0] = true;
+        for(int j=1;j<=m;j++){
+            if(p[j-1] != '*'){
+                break;
+            }
+            prev[j] = true;
+        }
+
+        for(int i=1;i<=n;i++){
+            vector<bool> curr(m+1, false);
+            for(int j=1;j<=m;j++){
+                if(s[i-1] == p[j-1] || p[j-1] == '?'){
+                    curr[j] = prev[j-1];
+                }
+                else{
+                    bool ans = false;
+                    if(p[j-1] == '*'){
+                        ans = prev[j] || curr[j-1];
+                    }
+                    curr[j] = ans;
+                }
+            }
+            prev = curr;
+        }
+        return prev[m];
     }
 };
