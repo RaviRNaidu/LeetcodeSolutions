@@ -1,5 +1,5 @@
 class Solution {
-    void nextpermutation(vector<int> temp, vector<int>& nums, vector<vector<int>>& ans, unordered_map<int, int> mpp, int n){
+    void nextpermutation(vector<int>& temp, vector<int>& nums, vector<vector<int>>& ans, unordered_map<int, int>& mpp, int n){
         if(temp.size() == n){
             ans.push_back(temp);
             return;
