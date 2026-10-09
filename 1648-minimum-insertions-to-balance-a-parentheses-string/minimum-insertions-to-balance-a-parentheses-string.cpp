@@ -4,10 +4,10 @@ public:
         int n = s.size();
         int ans = 0;
         int i = 0;
-        string temp = "";
+        stack<char> st;
         while(i < n){
             if(s[i] == '('){
-                temp += s[i];
+                st.push('(');
                 i++;
             }
             else{
@@ -15,32 +15,28 @@ public:
                 while(i < n && s[i] != '('){
                     cnt++;
                     if(cnt == 2){
-                        temp += ')';
+                        if(st.empty() || st.top() == ')'){
+                            st.push(')');
+                        }
+                        else{
+                            st.pop();
+                        }
                         cnt = 0;
                     }
                     i++;
                 }
                 if(cnt == 1){
                     ans++;
-                    temp += ')';
+                    if(st.empty() || st.top() == ')'){
+                        st.push(')');
+                    }
+                    else{
+                        st.pop();
+                    }
                 }
             }
         }
 
-        stack<char> st;
-        for(auto it : temp){
-            if(it == '('){
-                st.push(it);
-            }
-            else{
-                if(st.empty() || st.top() == ')'){
-                    st.push(it);
-                }
-                else{
-                    st.pop();
-                }
-            }
-        }
         while(!st.empty()){
             if(st.top() == '('){
                 ans += 2;
